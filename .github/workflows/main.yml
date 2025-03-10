@@ -43,7 +43,7 @@ jobs:
             docker network create app_network || true
 
             # Ensure MySQL is running - starts once, doesn't restart on app deployment
-            if ! docker ps --filter "name=mysql-db" | grep mysql-db; then
+            if ! sudo docker ps --filter "name=mysql-db" | grep mysql-db; then
               docker run -d \
                 --name mysql-db \
                 --network app_network \
@@ -65,11 +65,11 @@ jobs:
             echo "MySQL is ready, up and running"
 
             # Determine current active and idle containers
-            if docker ps --filter "name=flask-app-blue" | grep flask-app-blue; then
+            if sudo docker ps --filter "name=flask-app-blue" | grep flask-app-blue; then
                 ACTIVE_COLOR="blue"
                 IDLE_COLOR="green"
                 IDLE_PORT=5001
-            elif docker ps --filter "name=flask-app-green" | grep flask-app-green; then
+            elif sudo docker ps --filter "name=flask-app-green" | grep flask-app-green; then
                 ACTIVE_COLOR="green"
                 IDLE_COLOR="blue"
                 IDLE_PORT=5000
