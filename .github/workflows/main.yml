@@ -105,9 +105,20 @@ jobs:
 
             echo "Successfully deployed to \$IDLE_COLOR"
 
-            # Switch NGINX to new idle port
-            echo "Updating NGINX to point to port \$IDLE_PORT"
+            # Trim spaces/newlines
+            IDLE_PORT=$(echo "$IDLE_PORT" | tr -d '[:space:]')
 
+            # Debugging step
+            echo "Final IDLE_PORT: '$IDLE_PORT'"
+
+            # Ensure IDLE_PORT is not empty
+            if [ -z "$IDLE_PORT" ]; then
+                echo "Error: IDLE_PORT is empty. Skipping Nginx update."
+                # exit 1
+            fi
+
+            # Switch NGINX to new idle port
+            echo "Updating NGINX to point to port $IDLE_PORT"
             sudo sed -i "s|localhost:[0-9]*|localhost:$IDLE_PORT|g" /etc/nginx/conf.d/bluegreen.conf
             sudo nginx -s reload
 
