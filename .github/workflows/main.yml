@@ -106,12 +106,12 @@ jobs:
             echo "Successfully deployed to \$IDLE_COLOR"
 
             # Switch NGINX to new idle port
-            echo "Updating NGINX to point to port $IDLE_PORT"
+            echo "Updating NGINX to point to port \$IDLE_PORT"
             if [ -n "$IDLE_PORT" ]; then
-                sudo sed -i "s|localhost:[0-9]*|localhost:$IDLE_PORT|g" /etc/nginx/conf.d/bluegreen.conf
+                sudo sed -i "s|localhost:[0-9]*|localhost:\$IDLE_PORT|g" /etc/nginx/conf.d/bluegreen.conf
                 sudo nginx -s reload
             else
-                echo "Error: IDLE_PORT is not set. Skipping Nginx update."
+                echo "Error: \$IDLE_PORT is not set. Skipping Nginx update."
             fi
 
 
